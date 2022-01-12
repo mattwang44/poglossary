@@ -1,0 +1,104 @@
+source:
+  path: .
+  excludes:
+    - ./whatsnew
+
+glossary:
+  argument: 引數
+  attribute: 屬性
+  approximate: 近似
+  boolean:
+    - boolean（布林）
+    - boolean
+  class:
+    - 類別
+    - class
+  condition: 條件
+  contributor: 貢獻者
+  deprecated: 
+    - 已棄用
+    - 被棄用
+  dictionary: 
+    - 字典
+    - dictionary
+    - dict
+  element: 元素
+  exception: 例外
+  expression: 
+    - 運算式
+    - 表達式 # for regular expression
+  float: 
+    - float
+    - 浮點數
+  function: 函式
+  import: import  # no trans
+  index: 索引
+  instance: 實例
+  int: 
+    - 整數
+    - int
+  interpreter: 直譯器
+  iterate: 疊代
+  list:
+    - list
+    - 串列
+    - 清單
+    - 列表
+  loop: 迴圈
+  method: 
+    - method（方法）
+    - method
+    - 方法
+  module: 
+    - module
+    - 模組
+  object: 物件
+  operand: 運算元
+  operator: 運算子
+  parameter: 參數
+  prompt: 提示字元
+  return: 回傳
+  # set:
+  #   - set（集合）
+  #   - set
+  statement: 陳述式
+  type: 
+    - 型別
+    - 種類
+
+ignore:
+  override_default_patterns: false
+  override_default_rst_tags: false
+  patterns:
+    - "type code(s)?"
+    - "c type"
+    - "data type"
+    - "content-type"
+    - "patch\\.object"
+    - "^object$"
+    - "package index"
+    - "python type"
+    - "type\\(obj\\)"
+    - "for instance,"
+  rst_tags:
+    - source
+    - term
+    - class
+    - attr
+    - mod
+    - type
+    - meth
+    - func
+    - exc
+    - kbd
+    - data
+    - mod
+    - mimetype
+    - c:
+      - func  # e.g. :c:func:`PyModule_Create`
+      - data
+      - member 
+      - type
+      - macro
+
+    
