@@ -8,11 +8,9 @@ import polib
 from tabulate import tabulate
 import typer
 
-from utils import log_error, log_info
-from config import Config, DEFAULT_SOURCE_PATH
+from config import Config, DEFAULT_SOURCE_PATH, DEFAULT_CONFIG_PATH
 from find_sources import SourceFinder
-
-DEFAULT_CONFIG_PATH = "./poglossary.yml"
+import logger
 
 
 class Match(NamedTuple):
@@ -131,10 +129,10 @@ def main(
 
     if errors:
         for error in errors:
-            log_error(error, err=False)
+            logger.error(error)
         raise typer.Exit(code=1)
 
     if results:
         display(results)
     else:
-        log_info("No missing translation")
+        logger.info("No missing translation")

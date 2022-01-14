@@ -5,8 +5,10 @@ from typing import Any, Dict, List, Pattern, Union
 from pydantic import BaseModel, Extra
 import yaml
 
-from utils import log_error
+import logger
 
+
+DEFAULT_CONFIG_PATH = "./poglossary.yml"
 DEFAULT_SOURCE_PATH = '.'
 DEFAULT_SOURCE_EXCLUDES = [
     './.git',
@@ -83,8 +85,8 @@ class Config:
                     Loader=yaml.FullLoader,
                 )
             except Exception as err:
-                log_error("Something went wrong when loading config file, "
-                          f"err={err}")
+                logger.error("Something went wrong when loading config file, "
+                             f"err={err}")
 
         self.glossary: Dict[str, Any] = self.config.get('glossary', {})
 

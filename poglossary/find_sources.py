@@ -3,8 +3,8 @@ from typing import List
 
 from pydantic import BaseModel
 
-from utils import log_info, log_error
 from config import DEFAULT_SOURCE_EXCLUDES
+import logger
 
 
 class SourceFinder(BaseModel):
@@ -18,14 +18,14 @@ class SourceFinder(BaseModel):
 
         length = len(self.po_paths)
         if not length:
-            log_error(f"Cannot found any .po file from '{self.path}'!")
+            logger.error(f"Cannot found any .po file from '{self.path}'!", err=True)
         else:
-            log_info(f"Found {length} po file(s)")
+            logger.info(f"Found {length} po file(s)")
 
     def _get_po_paths(self) -> List[Path]:
         """Find all .po files in given path"""
         if not self.path.exists():
-            log_error(f"The path '{self.path.absolute()}' does not exist!")
+            logger.error(f"The path '{self.path.absolute()}' does not exist!", err=True)
 
         # return 1-element list if it's a file
         if self.path.is_file():
