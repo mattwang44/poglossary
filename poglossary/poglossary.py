@@ -10,6 +10,7 @@ import typer
 
 from utils import log_error, log_info
 from config import Config, DEFAULT_SOURCE_PATH
+from find_sources import SourceFinder
 
 DEFAULT_CONFIG_PATH = "./poglossary.yml"
 
@@ -108,21 +109,22 @@ def main(
         DEFAULT_SOURCE_PATH,
         help="the path of the directory storing .po files",
     ),
-    excludes: List[Path] = typer.Option(
-        [],
-        help="the directories that need to be omitted",
-    ),
     config_file: Path = typer.Argument(
         DEFAULT_CONFIG_PATH,
         help="input mapping file",
+    ),
+    excludes: List[Path] = typer.Option(
+        [],
+        help="the directories that need to be omitted",
     ),
 ):
     """
     poglossary: check translated content in .po files based on given translation mapping
     """
-    config = Config(config_file, path, excludes)
+    config = Config(config_file)
+    po_paths = SourceFinder(path=path, excludes=excludes).po_paths
     errors, results = check_glossary(
-        config.po_paths,
+        po_paths,
         config.glossary,
         config.ignore_pattern,
     )

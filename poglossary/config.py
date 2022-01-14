@@ -1,20 +1,16 @@
 from pathlib import Path
 import re
 from typing import Any, Dict, List, Pattern, Union
-import pprint as pp
 
 from pydantic import BaseModel, Extra
-import typer
 import yaml
 
-from utils import log_error, log_info
-
+from utils import log_error
 
 DEFAULT_SOURCE_PATH = '.'
 DEFAULT_SOURCE_EXCLUDES = [
     './.git',
 ]
-
 DEFAULT_IGNORE_RST_TAG_OBJS = [
     'ref', 'keyword', 'dfn',
 ]
@@ -28,66 +24,6 @@ DEFAULT_IGNORE_PATTERNS = [
     r'\*.*?\*',
     r'\*\*.*?\*\*',
 ]
-
-
-class SourceSettings(BaseModel):
-    path: Path = DEFAULT_SOURCE_PATH
-    exlcudes: List[Path] = []
-    po_paths: List[Path] = []
-
-    def __init__(self, **data) -> None:
-        super().__init__(**data)
-        self.po_paths = self._exclude(self._get_po_paths())
-
-        length = len(self.po_paths)
-        log_info(f"{length} po files are found from {self.path.resolve()}")
-
-    def _get_po_paths(self) -> List[Path]:
-        """Find all .po files in given path"""
-        if not self.path.exists():
-            log_error(
-                f"The path '{self.path.absolute()}' does not exist!")
-
-        # return 1-element list if it's a file
-        if self.path.is_file():
-            return [self.path]
-
-        # find all .po files
-        po_paths = list(self.path.glob("**/*.po"))
-        if not len(po_paths):
-            log_error(
-                f"Cannot found any .po file from '{self.path.resolve()}'!")
-        return po_paths
-
-    def _exclude(self, po_paths: List[Path]) -> List[Path]:
-        """Exclude paths by the given list of paths"""
-        self.exlcudes.extend(DEFAULT_SOURCE_EXCLUDES)
-
-        excluded_files = []
-        excluded_dirs = []
-        for e in self.exlcudes:
-            for path in self.path.glob(e):
-                p = path.resolve()
-                if p.is_file():
-                    excluded_files.append(p)
-                else:
-                    excluded_dirs.append(p)
-
-        paths = []
-        for path in po_paths:
-            p = path.resolve()
-
-            # exclude if matched
-            if p in excluded_files:
-                continue
-
-            # exclude if it's in the given directory
-            if any(e in p.parents for e in excluded_dirs):
-                continue
-
-            paths.append(path)
-
-        return paths
 
 
 class IgnoreSettings(BaseModel):
@@ -136,8 +72,6 @@ class Config:
     def __init__(
         self,
         config_file: Union[Path, str],
-        cmd_path: Path = None,
-        cmd_excludes: List[Path] = [],
     ) -> None:
         # TODO: need format check for config file
         config_file_path = Path(config_file)
@@ -154,23 +88,11 @@ class Config:
 
         self.glossary: Dict[str, Any] = self.config.get('glossary', {})
 
-        cmd = {}
-        if cmd_path:
-            cmd['path'] = cmd_path
-        if cmd_excludes:
-            cmd['excludes'] = cmd_excludes
-        self.source: SourceSettings = SourceSettings(
-            **(self.config.get('source', {}) | cmd),
-        )
-
         self.ignore_settings: IgnoreSettings = IgnoreSettings(
             **self.config.get('ignore', {}),
         )
 
     @property
-    def po_paths(self):
-        return self.source.po_paths
-
-    @property
     def ignore_pattern(self):
+        # merely a shorthand
         return self.ignore_settings.ignore_pattern
