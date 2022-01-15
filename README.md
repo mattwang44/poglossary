@@ -1,5 +1,8 @@
 # poglossary
 
+[![Python](https://img.shields.io/pypi/pyversions/poglossary.svg?style=plastic)](https://badge.fury.io/py/poglossary)
+[![PyPI](https://badge.fury.io/py/poglossary.svg)](https://badge.fury.io/py/poglossary)
+
 A CLI tool that scans through translation project (`.po` files) searching for mistranslated terms based on the user-defined glossary mapping.
 
 This project is specially tailored for [Python Documentation Translation Project (zh_TW)](https://github.com/python/python-docs-zh-tw) but can be applied for all translation projects that adopt Portable Object files (`.po`).
