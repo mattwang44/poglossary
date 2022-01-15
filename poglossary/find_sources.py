@@ -3,8 +3,8 @@ from typing import List
 
 from pydantic import BaseModel
 
-from config import DEFAULT_SOURCE_EXCLUDES
-import logger
+from .config import DEFAULT_SOURCE_EXCLUDES
+from . import logger
 
 
 class SourceFinder(BaseModel):

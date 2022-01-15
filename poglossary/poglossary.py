@@ -8,9 +8,11 @@ import polib
 from tabulate import tabulate
 import typer
 
-from config import Config, DEFAULT_SOURCE_PATH, DEFAULT_CONFIG_PATH
-from find_sources import SourceFinder
-import logger
+from .config import Config, DEFAULT_SOURCE_PATH, DEFAULT_CONFIG_PATH
+from .find_sources import SourceFinder
+from . import logger
+
+app = typer.Typer()
 
 
 class Match(NamedTuple):
@@ -102,7 +104,8 @@ def display(matches: List[Match]) -> None:
     print(table)
 
 
-def main(
+@app.command()
+def check(
     path: Path = typer.Argument(
         DEFAULT_SOURCE_PATH,
         help="the path of the directory storing .po files",

@@ -1,9 +1,13 @@
 [tool.poetry]
 name = "poglossary"
-version = "0.1.0"
-description = ""
+version = "0.1.2"
+description = "A CLI tool that scans through .po files and searches for mistranslated terms based on user-defined glossary mapping"
 authors = ["Matt.Wang <mattwang44@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+
+[tool.poetry.scripts]
+poglossary = 'poglossary.poglossary:app'
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -19,3 +23,4 @@ pytest = "^6.2.5"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
