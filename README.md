@@ -1,5 +1,8 @@
 # poglossary
 
+[![Python](https://img.shields.io/pypi/pyversions/poglossary.svg?style=plastic)](https://badge.fury.io/py/poglossary)
+[![PyPI](https://badge.fury.io/py/poglossary.svg)](https://badge.fury.io/py/poglossary)
+
 A CLI tool that scans through translation project (`.po` files) searching for mistranslated terms based on the user-defined glossary mapping.
 
 This project is specially tailored for [Python Documentation Translation Project (zh_TW)](https://github.com/python/python-docs-zh-tw) but can be applied for all translation projects that adopt Portable Object files (`.po`).
@@ -13,6 +16,8 @@ pip3 install poglossary
 ```
 
 To update it to the latest version, add `--upgrade` flag to the above commands.
+
+Run `poglossary --help` and you should see the following output if it's installed sucessfully.
 
 ```sh
 poglossary --help
@@ -35,22 +40,48 @@ poglossary --help
 
 ## Usage
 
+### Config File
+
+A config file in YAML format is required for poglossary, only the following two keys are recognized:
+
+- `glossary` (required): A mapping of untrnaslated term to translated term. The value can be a list if it has multiple translation choices.
+- `ignore` (optional): If skipping the checking for specific regex patterns or rST syntax is wanted, add the key `patterns` or `rst_tags` as the example below.
+
 ```yml
 # Sample config file (.yml)
 glossary:
   exception: 例外
   function: 函式
   instance: 實例
-  type: # can be a list of possible translated terms
+  type: # can be a list of possible translated terms of "type"
     - 型別
     - 種類
+
+ignore:
+  patterns:
+    - "type code(s)?" # "type code" or "type codes" will be skipped
+  rst_tags:
+    - source # skip :source:`*`
+    - class
+    - c:
+        - func # -> skip :c:func:`*`
+        - data
 ```
+
+or you can checkout a more detailed configuration in [poglossary.example.yml](./poglossary.example.yml) (, which is the config tend to be used in [pydoc-zhtw](https://github.com/python/python-docs-zh-tw)).
+
+### Command
 
 ```shell
-poetry run python3 poglossary <source_path> <config_file>
+poglossary <source_path> <config_file>
 ```
 
-## Sample Output
+`poglossary` takes in two optional arguments:
+
+- `source_path`: It can be the path of the target PO file or a directory that stores PO files. Defaults to `.`.
+- `config_file`: The path of the config file. Defaults to `./poglossary.yml`.
+
+The sample output is shown below:
 
 ![image](https://user-images.githubusercontent.com/24987826/149608253-bec9d2ed-6605-41c8-956c-5e23e8447a5d.png)
 
