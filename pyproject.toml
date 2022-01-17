@@ -17,6 +17,7 @@ tabulate = {version = "^0.8.9", extras = ["widechars"]}
 typer = {version = "^0.4.0", extras = ["all"]}
 pydantic = "^1.9.0"
 mypy = "^0.931"
+isort = "^5.10.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
