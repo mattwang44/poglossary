@@ -10,8 +10,8 @@ from . import logger
 
 DEFAULT_CONFIG_PATH = "./poglossary.yml"
 DEFAULT_SOURCE_PATH = '.'
-DEFAULT_SOURCE_EXCLUDES = [
-    './.git',
+DEFAULT_SOURCE_EXCLUDE_PATTERNS = [
+    '.git',
 ]
 DEFAULT_IGNORE_RST_TAG_OBJS = [
     'ref', 'keyword', 'dfn',
@@ -45,11 +45,14 @@ class IgnoreSettings(BaseModel):
 
     def _build_tags(self, tag_objs: List[Union[Dict, str]]) -> List[str]:
         if not self.override_default_rst_tags:
-            tag_objs = DEFAULT_IGNORE_RST_TAG_OBJS + tag_objs
+            tag_objs.extend(DEFAULT_IGNORE_RST_TAG_OBJS)
 
-        ignore_tags = []
+        ignore_tags: List[str] = []
 
-        def _build_tags_recursively(tag_objs, prefix=''):
+        def _build_tags_recursively(
+            tag_objs: List[Union[Dict, str]],
+            prefix: str = '',
+        ) -> None:
             for obj in tag_objs:
                 if isinstance(obj, str):
                     ignore_tags.append(f":{prefix}{obj}:")
@@ -76,7 +79,7 @@ class Config:
         config_file: Union[Path, str],
     ) -> None:
         # TODO: need format check for config file
-        config_file_path = Path(config_file)
+        config_file_path: Path = Path(config_file)
         self.config: Dict[str, Any] = {}
         if config_file_path.is_file():
             try:
@@ -95,6 +98,6 @@ class Config:
         )
 
     @property
-    def ignore_pattern(self):
+    def ignore_pattern(self) -> Pattern:
         # merely a shorthand
         return self.ignore_settings.ignore_pattern

@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 from shutil import get_terminal_size
 import textwrap
-from typing import Dict, List, NamedTuple, Pattern, Union
+from typing import Dict, List, NamedTuple, Optional, Pattern, Tuple, Union
 
 import polib
 from tabulate import tabulate
@@ -17,7 +17,7 @@ app = typer.Typer()
 
 class Match(NamedTuple):
     path: Path
-    linenum: int
+    linenum: Optional[int]
     msgid: str
     msgstr: str
     lost_trans: Dict[str, Union[str, List[str]]]
@@ -27,7 +27,7 @@ def check_glossary(
     po_files: List[Path],
     glossary: Dict[str, Union[str, List[str]]],
     ignore_pattern: Pattern,
-):
+) -> Tuple[List[str], List[Match]]:
     if not glossary:
         return [], []
 
@@ -37,7 +37,7 @@ def check_glossary(
     errors = []
     for path in po_files:
         try:
-            pofile = polib.pofile(path)
+            pofile = polib.pofile(str(path))
         except OSError:
             errors.append(f"{path} doesn't seem to be a .po file")
             continue
