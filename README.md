@@ -91,8 +91,6 @@ The sample output is shown below:
   - [ ] More handy parameters/options
 - [ ] CI/CD
   - [ ] Unit tests
-  - [ ] Static checks (mypy, isort, etc)
-  - [ ] Upload to PyPI
 - [ ] Config files
   - [ ] Handle missing fields.
   - [ ] Commands for creating a basic config file.

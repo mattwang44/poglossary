@@ -1,15 +1,16 @@
+import glob
 from pathlib import Path
 from typing import List
 
 from pydantic import BaseModel
 
-from .config import DEFAULT_SOURCE_EXCLUDES
 from . import logger
+from .config import DEFAULT_SOURCE_EXCLUDE_PATTERNS
 
 
 class SourceFinder(BaseModel):
     path: Path
-    exlcudes: List[Path] = []
+    excludes: List[Path] = []
     po_paths: List[Path] = []
 
     def __init__(self, *args, **kwargs) -> None:
@@ -37,17 +38,18 @@ class SourceFinder(BaseModel):
 
     def _exclude(self, po_paths: List[Path]) -> List[Path]:
         """Exclude paths by the given list of paths"""
-        self.exlcudes.extend(DEFAULT_SOURCE_EXCLUDES)
+        for pattern in DEFAULT_SOURCE_EXCLUDE_PATTERNS:
+            for relative_path in glob.glob(pattern):
+                self.excludes.append(self.path / relative_path)
 
         excluded_files = []
         excluded_dirs = []
-        for e in self.exlcudes:
-            for path in self.path.glob(e):
-                p = path.resolve()
-                if p.is_file():
-                    excluded_files.append(p)
-                else:
-                    excluded_dirs.append(p)
+        for path in self.excludes:
+            p = path.resolve()
+            if p.is_file():
+                excluded_files.append(p)
+            else:
+                excluded_dirs.append(p)
 
         paths = []
         for path in po_paths:
