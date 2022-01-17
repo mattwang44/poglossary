@@ -1,12 +1,11 @@
-from pathlib import Path
 import re
+from pathlib import Path
 from typing import Any, Dict, List, Pattern, Union
 
-from pydantic import BaseModel, Extra
 import yaml
+from pydantic import BaseModel, Extra
 
 from . import logger
-
 
 DEFAULT_CONFIG_PATH = "./poglossary.yml"
 DEFAULT_SOURCE_PATH = '.'

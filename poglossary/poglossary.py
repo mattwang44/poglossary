@@ -1,16 +1,16 @@
-from pathlib import Path
 import re
-from shutil import get_terminal_size
 import textwrap
+from pathlib import Path
+from shutil import get_terminal_size
 from typing import Dict, List, NamedTuple, Optional, Pattern, Tuple, Union
 
 import polib
-from tabulate import tabulate
 import typer
+from tabulate import tabulate
 
-from .config import Config, DEFAULT_SOURCE_PATH, DEFAULT_CONFIG_PATH
-from .find_sources import SourceFinder
 from . import logger
+from .config import DEFAULT_CONFIG_PATH, DEFAULT_SOURCE_PATH, Config
+from .find_sources import SourceFinder
 
 app = typer.Typer()
 

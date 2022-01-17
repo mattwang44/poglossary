@@ -1,11 +1,11 @@
-from pathlib import Path
 import glob
+from pathlib import Path
 from typing import List
 
 from pydantic import BaseModel
 
-from .config import DEFAULT_SOURCE_EXCLUDE_PATTERNS
 from . import logger
+from .config import DEFAULT_SOURCE_EXCLUDE_PATTERNS
 
 
 class SourceFinder(BaseModel):
