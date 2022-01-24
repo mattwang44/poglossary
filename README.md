@@ -61,10 +61,10 @@ ignore:
   patterns:
     - "type code(s)?" # "type code" or "type codes" will be skipped
   rst_tags:
-    - source # skip :source:`*`
+    - source # :source:`*` will be skipped
     - class
     - c:
-        - func # -> skip :c:func:`*`
+        - func # :c:func:`*` will be skipped
         - data
 ```
 
@@ -91,8 +91,10 @@ The sample output is shown below:
   - [ ] More handy parameters/options
 - [ ] CI/CD
   - [ ] Unit tests
-  - [ ] Static checks (mypy, isort, etc)
-  - [ ] Upload to PyPI
 - [ ] Config files
   - [ ] Handle missing fields.
   - [ ] Commands for creating a basic config file.
+
+## Acknowledge
+
+`poglossary` is primarily inspired by those fantastic translator tools collected in [poutils](https://github.com/afpy/poutils) and [translate toolkit](https://github.com/translate/translate).

@@ -1,23 +1,23 @@
-from pathlib import Path
 import re
-from shutil import get_terminal_size
 import textwrap
-from typing import Dict, List, NamedTuple, Pattern, Union
+from pathlib import Path
+from shutil import get_terminal_size
+from typing import Dict, List, NamedTuple, Optional, Pattern, Tuple, Union
 
 import polib
-from tabulate import tabulate
 import typer
+from tabulate import tabulate
 
-from .config import Config, DEFAULT_SOURCE_PATH, DEFAULT_CONFIG_PATH
-from .find_sources import SourceFinder
 from . import logger
+from .config import DEFAULT_CONFIG_PATH, DEFAULT_SOURCE_PATH, Config
+from .find_sources import SourceFinder
 
 app = typer.Typer()
 
 
 class Match(NamedTuple):
     path: Path
-    linenum: int
+    linenum: Optional[int]
     msgid: str
     msgstr: str
     lost_trans: Dict[str, Union[str, List[str]]]
@@ -27,7 +27,7 @@ def check_glossary(
     po_files: List[Path],
     glossary: Dict[str, Union[str, List[str]]],
     ignore_pattern: Pattern,
-):
+) -> Tuple[List[str], List[Match]]:
     if not glossary:
         return [], []
 
@@ -37,7 +37,7 @@ def check_glossary(
     errors = []
     for path in po_files:
         try:
-            pofile = polib.pofile(path)
+            pofile = polib.pofile(str(path))
         except OSError:
             errors.append(f"{path} doesn't seem to be a .po file")
             continue
