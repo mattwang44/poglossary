@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poglossary"
-version = "0.1.3"
+version = "0.1.4"
 description = "A CLI tool that scans through .po files and searches for mistranslated terms based on user-defined glossary mapping"
 authors = ["Matt.Wang <mattwang44@gmail.com>"]
 license = "MIT"
